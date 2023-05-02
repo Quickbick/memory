@@ -1,3 +1,8 @@
+//global variables
+var player = 0;
+var cardsClicked = 0;
+var lastCard = null;
+
 // function to load text from another file into a DOM element
 function loadFileInto(fromFile, whereTo) {
 
@@ -47,6 +52,30 @@ function addBox(){
     let newBox = document.createElement("a");
     document.querySelector("#container").appendChild(newBox);
     let current = this;
+    newBox.addEventListener("click", boxEvent = (box) => {
+        if (box.target.style.backgroundColor == "maroon"){
+            //ignores selected or removed cards
+        }
+        else if (cardsClicked === 0){
+           box.target.style.backgroundColor = "maroon"; 
+           lastCard = box;
+           cardsClicked++;
+        }
+        else{
+            box.target.style.backgroundColor = "maroon";
+            cardsClicked = 0;
+            if(box.target.innerHTML == lastCard.target.innerHTML){
+               //add point and remove if match
+            }
+            else{
+               setTimeout(function(){
+               box.target.style.backgroundColor = "black";
+               lastCard.target.style.backgroundColor = "black";
+               }, 1000); 
+            }
+        }
+        
+    });
 }
 
 //places cards into random boxes
