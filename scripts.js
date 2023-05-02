@@ -2,6 +2,7 @@
 var player = 0;
 var cardsClicked = 0;
 var lastCard = null;
+var scores = [0,0];
 
 // function to load text from another file into a DOM element
 function loadFileInto(fromFile, whereTo) {
@@ -65,13 +66,23 @@ function addBox(){
             box.target.style.backgroundColor = "maroon";
             cardsClicked = 0;
             if(box.target.innerHTML == lastCard.target.innerHTML){
-               //add point and remove if match
+               scores[player] = scores[player] + 2;
             }
             else{
                setTimeout(function(){
                box.target.style.backgroundColor = "black";
                lastCard.target.style.backgroundColor = "black";
                }, 1000); 
+            }
+            //updates scores at end of turn
+            document.querySelector("#p1").innerHTML = scores[0];
+            document.querySelector("#p2").innerHTML = scores[1];
+            //changes player at end of turn
+            if (player === 0){
+                player = 1;
+            }
+            else{
+                player = 0;
             }
         }
         
@@ -104,7 +115,16 @@ document.addEventListener("DOMContentLoaded", function() {
     //resets board
     let button = document.querySelector("#button");
     button.addEventListener("click", function(){
+        var as = document.querySelectorAll('#container a'); 
+        for (let i = 0; i < as.length; i++) {
+            as[i].remove();
+        }
+        for(i = 0; i < 16; i++){
+            addBox();
+        }
         boxCards(cards);
+        scores[0] = 0; scores[1] = 0;
+        document.querySelector("#p1").innerHTML = scores[0];
+        document.querySelector("#p2").innerHTML = scores[1];
     });
-    
 });
