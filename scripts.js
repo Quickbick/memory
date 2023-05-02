@@ -23,6 +23,25 @@ function loadFileInto(fromFile, whereTo) {
 	ajax.send();
 }
 
+function double(array){
+    const base = [];
+    for(var i = 0; i<array.length; i++) {
+     base.push(array[i], array[i]);   
+    }
+    return base;
+}
+
+/* Randomize array in-place using Durstenfeld shuffle algorithm */
+//taken from https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array comments
+function shuffleArray(array) {
+    for (var i = array.length - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1));
+        var temp = array[i];
+        array[i] = array[j];
+        array[j] = temp;
+    }
+}
+
 //adds boxes, taken and adapted from UP2
 function addBox(){
     let newBox = document.createElement("a");
@@ -30,19 +49,33 @@ function addBox(){
     let current = this;
 }
 
-//loads boxes and reset button, taken and adapted from UP2
+//places cards into random boxes
+function boxCards(array){
+    shuffleArray(array);
+    var counter = 0;
+    var as = document.querySelectorAll('#container a'); 
+        [].forEach.call(as, function(a) {
+            a.innerHTML = array[counter];
+            counter++;
+        });
+}
+
+//loads content and setup, used as a main function for my page
 document.addEventListener("DOMContentLoaded", function() {
     
     for(i = 0; i < 16; i++){
         addBox();
     }
+    
+    //creates shuffled card array
+    var cards = new Array(1,2,3,4,5,6,7,8); //replace with files for AJAX loading
+    cards = double(cards);
+    boxCards(cards);
+    
+    //resets board
     let button = document.querySelector("#button");
     button.addEventListener("click", function(){
-        //loops through all boxes and empties them
-        var as = document.querySelectorAll('#container a'); 
-        [].forEach.call(as, function(a) {
-            a.innerHTML = "";
-        });
+        boxCards(cards);
     });
     
 });
