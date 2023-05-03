@@ -36,6 +36,7 @@ function loadFileInto(fromFile, whereTo) {
 	ajax.send();
 }
 
+//doubles each object in array to make double length array
 function double(array){
     const base = [];
     for(var i = 0; i<array.length; i++) {
@@ -64,19 +65,19 @@ function addBox(){
         if (box.target.style.backgroundImage != 'none' && box.target.style.backgroundImage !== ""){
             //ignores selected or removed cards
         }
-        else if (cardsClicked === 0){
+        else if (cardsClicked === 0){ //flips card for first card
            box.target.style.backgroundImage = "url(" + cards[box.target.id].img + ")";
            console.log(cards[box.target.id].img);
            lastCard = box;
            cardsClicked++;
         }
-        else{
+        else{ //flips second card
             box.target.style.backgroundImage = "url(" + cards[box.target.id].img + ")";
             cardsClicked = 0;
-            if(box.target.innerHTML == lastCard.target.innerHTML){
+            if(box.target.innerHTML == lastCard.target.innerHTML){ //if cards match leaves them up and updates score
                scores[player] = scores[player] + 2;
             }
-            else{
+            else{ //reflips both cards
                setTimeout(function(){
                box.target.style.backgroundImage = 'none';
                box.target.style.backgroundColor = "black";
