@@ -3,6 +3,13 @@ var player = 0;
 var cardsClicked = 0;
 var lastCard = null;
 var scores = [0,0];
+var cards;
+
+// pairs images of professors with the files containing their names
+function filePair(a, b){
+    this.name = a;
+    this.img = b;
+}
 
 // function to load text from another file into a DOM element
 function loadFileInto(fromFile, whereTo) {
@@ -16,14 +23,14 @@ function loadFileInto(fromFile, whereTo) {
 	// provides code to do something in response to the AJAX request
 	ajax.onreadystatechange = function() {
 			if ((this.readyState == 4) && (this.status == 200)) {
-				document.querySelector(whereTo).innerHTML = this.responseText;
+				whereTo.innerHTML = this.responseText;
                 console.log("Loaded " + fromFile + " into " + whereTo);
 
 			} else if ((this.readyState == 4) && (this.status != 200)) {
                 console.log( ("Could not load " + fromFile + " into " + whereTo + ". Specific error: "), this.responseText);
 			}
 		
-	} // end ajax.onreadystatechange function
+	}; // end ajax.onreadystatechange function
 
 	// initiate request and wait for response
 	ajax.send();
@@ -50,27 +57,30 @@ function shuffleArray(array) {
 
 //adds boxes, taken and adapted from UP2
 function addBox(){
-    let newBox = document.createElement("a");
+    var newBox = document.createElement("a");
     document.querySelector("#container").appendChild(newBox);
     let current = this;
     newBox.addEventListener("click", boxEvent = (box) => {
-        if (box.target.style.backgroundColor == "maroon"){
+        if (box.target.style.backgroundImage != 'none' && box.target.style.backgroundImage !== ""){
             //ignores selected or removed cards
         }
         else if (cardsClicked === 0){
-           box.target.style.backgroundColor = "maroon"; 
+           box.target.style.backgroundImage = "url(" + cards[box.target.id].img + ")";
+           console.log(cards[box.target.id].img);
            lastCard = box;
            cardsClicked++;
         }
         else{
-            box.target.style.backgroundColor = "maroon";
+            box.target.style.backgroundImage = "url(" + cards[box.target.id].img + ")";
             cardsClicked = 0;
             if(box.target.innerHTML == lastCard.target.innerHTML){
                scores[player] = scores[player] + 2;
             }
             else{
                setTimeout(function(){
+               box.target.style.backgroundImage = 'none';
                box.target.style.backgroundColor = "black";
+               lastCard.target.style.backgroundImage = 'none';
                lastCard.target.style.backgroundColor = "black";
                }, 1000); 
             }
@@ -95,7 +105,8 @@ function boxCards(array){
     var counter = 0;
     var as = document.querySelectorAll('#container a'); 
         [].forEach.call(as, function(a) {
-            a.innerHTML = array[counter];
+            loadFileInto(array[counter].name, a);
+            a.setAttribute("id", counter);
             counter++;
         });
 }
@@ -108,7 +119,15 @@ document.addEventListener("DOMContentLoaded", function() {
     }
     
     //creates shuffled card array
-    var cards = new Array(1,2,3,4,5,6,7,8); //replace with files for AJAX loading
+    var tor = new filePair("tor.html", "tor.jpg");
+    var jordan = new filePair("jordan.html", "jordan.jpg");
+    var dang = new filePair("dang.html", "dang.jpg");
+    var andy = new filePair("andy.html", "andy.jpg");
+    var cerruti = new filePair("cerruti.html", "cerruti.jpg");
+    var remaley = new filePair("remaley.html", "remaley.jpg");
+    var assefaw = new filePair("assefaw.html", "assefaw.jpg");
+    var wang = new filePair("wang.html", "wang.png");
+    cards = new Array(tor,jordan,dang,andy,cerruti,remaley,assefaw,wang);
     cards = double(cards);
     boxCards(cards);
     

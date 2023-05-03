@@ -7,13 +7,16 @@
 }
 
 #container a {
-  padding: 1em;
+  width: 15vw;
   margin: 0.25em;
   background-color: black;
+  background-image: none;
   color: black;
   text-align: center;
-  font-size: 64px;
-  
+  font-size: 32px;
+  background-position: center top;
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
 #container a:hover {
